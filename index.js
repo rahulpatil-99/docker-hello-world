@@ -1,9 +1,10 @@
 const express = require("express");
-const http = require('http');
 const request = require('request');
 const app = express();
 
 let todoPath = process.env.url;
+
+app.use(express.urlencoded({extended:false}));
 
 app.get("/", (req,res)=> res.send("Hello"));
 
@@ -13,4 +14,10 @@ app.get("/todos", (req,res)=> {
     });
 });
 
-http.createServer(app).listen(3000);
+app.post("/addTodo", (req,res)=>{
+    request.post(`${todoPath}/addTodo`, {json: {title: req.body.title, desc: req.body.desc}}, (error, response, body)=>{
+        res.send(body);
+    });
+});
+
+app.listen(3000);
