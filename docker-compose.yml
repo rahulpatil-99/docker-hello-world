@@ -1,0 +1,13 @@
+version: '3'
+
+services: 
+  todoapp:
+    build: ../todo/
+    volumes: 
+      - ../todo/todos.csv:/var/todoApp/todos.csv:rw
+  nodeapp:
+    build: .
+    ports: 
+      - "3000:3000"
+    environment:
+      - url=http://todoapp:8080
